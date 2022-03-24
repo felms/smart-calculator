@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -12,17 +13,14 @@ public class Main {
                 if ("/exit".equals(line)) {
                     System.out.println("Bye!");
                     exit = true;
+                } else if ("/help".equals(line)) {
+                    System.out.println("The program calculates the sum of numbers");
                 } else {
                     
                     String[] inputs = line.split("\\s+");
-                    int a = Integer.parseInt(inputs[0]);
-                    if (inputs.length == 1) {
-                        System.out.println(a);
-                    } else if (inputs.length == 2) {
-                        int b = Integer.parseInt(inputs[1]);
-                        System.out.println(a + b);
-                    }
-                    
+                    int sum = Arrays.stream(inputs).mapToInt(Integer::parseInt).sum();
+                    System.out.println(sum);
+                                        
                 }
             } 
             
