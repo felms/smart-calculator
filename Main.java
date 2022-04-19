@@ -14,18 +14,23 @@ public class Main {
                     exit = true;
                 } else if ("/help".equals(line)) {
                     System.out.println("The program calculates the sum of numbers");
+                } else if (line.matches("\\/.*")) {
+                    System.out.println("Unknown command");
                 } else {
 
                     String[] expression = line.split("\\s+");
-                    int result = calculate(expression);
-                    System.out.println(result);
 
+                    try{
+                        int result = calculate(expression);
+                        System.out.println(result);
+                    }catch(NumberFormatException nfe) {
+                        System.out.println("Invalid expression");
+                    }
                 }
             }
 
         }
         scanner.close();
-
     }
 
     public static int calculate(String[] expression) {
@@ -54,7 +59,6 @@ public class Main {
                 i++;
             }
         }
-
         return sum;
     }
 }
