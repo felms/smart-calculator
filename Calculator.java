@@ -1,3 +1,5 @@
+import java.math.BigInteger;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
@@ -5,7 +7,7 @@ import java.util.Map;
 
 public class Calculator {
 
-    private Map<String, Integer> variables;
+    private Map<String, BigInteger> variables;
 
     public Calculator() {
         this.variables = new HashMap<>();
@@ -16,7 +18,7 @@ public class Calculator {
         if (expr.matches(".*\\s*=\\s*.*")) {                // Caso seja uma atribuição
             variableAssignment(expr);
         } else if (expr.matches("[a-zA-Z]+")) {         // Consulta do valor de uma variável
-            Integer varValue = this.variables.get(expr);
+            BigInteger varValue = this.variables.get(expr);
             if (varValue == null) {
                 System.out.println("Unknown variable");
             } else {
@@ -24,37 +26,37 @@ public class Calculator {
             }
 
         } else if (expr.matches("\\d+")) {              // Input de um inteiro apenas
-            System.out.println(Integer.parseInt(expr));
+            System.out.println(expr);
         } else {                                              // Cálculo de soma ou subtração de inteiros
             String expression = replaceOperands(expr);
             expression = infixToPosfix(expression);
 
             String[] operands = expression.split("\\s+");
-            Deque<Integer> stack = new ArrayDeque<>();
+            Deque<BigInteger> stack = new ArrayDeque<>();
 
             for (String operand : operands) {
                 if (operand.matches("^-?\\d+$")) {
-                    stack.addLast(Integer.valueOf(operand));
+                    stack.addLast(new BigInteger(operand));
                 } else {
-                    int a = stack.removeLast();
-                    int b = stack.removeLast();
+                    BigInteger a = stack.removeLast();
+                    BigInteger b = stack.removeLast();
 
-                    int result = 0;
+                    BigInteger result = BigInteger.ZERO;
                     switch (operand) {
                         case "+":
-                            result = b + a;
+                            result = b.add(a);
                             break;
                         case "-":
-                            result = b - a;
+                            result = b.subtract(a);
                             break;
                         case "*":
-                            result = b * a;
+                            result = b.multiply(a);
                             break;
                         case "/":
-                            result = b / a;
+                            result = b.divide(a);
                             break;
                         case "^":
-                            result = (int)Math.pow(b, a);
+                            result = b.pow(a.intValue());
                             break;
                     }
                     stack.addLast(result);
@@ -102,7 +104,7 @@ public class Calculator {
         for (String operand : operands) {
 
             if (operand.matches("^[a-zA-Z]+")) { // Se o operando é uma variável eu pego o valor da mesma
-                Integer varValue = this.variables.get(operand);
+                BigInteger varValue = this.variables.get(operand);
                 if (varValue == null) {
                     throw new CalculatorException("Unknown variable");
                 } else {
@@ -159,14 +161,14 @@ public class Calculator {
             } else if (!entry[0].matches("\\b[a-zA-Z]+\\b")) {                 // Testa para inputs inválidos
                 throw new CalculatorException("Invalid identifier");
             } else if (input.matches("[a-zA-Z]+\\s*=\\s*[a-zA-Z]+")) {              // Executa atribuição de variáveis
-                Integer varValue = this.variables.get(entry[1]);
+                BigInteger varValue = this.variables.get(entry[1]);
                 if (varValue == null) {
                     throw new CalculatorException("Unknown variable");
                 }
                 variables.put(entry[0], varValue);
 
             }else if (input.matches("[a-zA-Z]+\\s*=\\s*-?\\d+")) {
-                variables.put(entry[0], Integer.parseInt(entry[1]));
+                variables.put(entry[0], new BigInteger(entry[1]));
             }
         }
 
