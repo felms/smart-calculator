@@ -14,7 +14,7 @@ public class Main {
                     System.out.println("Bye!");
                     exit = true;
                 } else if ("/help".equals(input)) {
-                    System.out.println("The program calculates the sum of numbers");
+                    System.out.println("This is a calculator program that executes the five basic operations on numbers");
                 } else if (input.matches("\\/.*")) {
                     System.out.println("Unknown command");
                 } else {
@@ -23,11 +23,14 @@ public class Main {
                         calculator.calculate(input);
                     }catch(NumberFormatException nfe) {
                         System.out.println("Invalid expression");
+                    } catch (CalculatorException calculatorException) {
+                        System.out.println(calculatorException.getMessage());
                     }
                 }
             }
 
         }
+
         scanner.close();
     }
 
